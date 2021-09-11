@@ -3,6 +3,7 @@ package com.eaapps.motionlayout
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
+import android.util.Log
 import android.view.animation.AccelerateDecelerateInterpolator
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.widget.NestedScrollView
@@ -234,23 +235,27 @@ class Step2Activity : AppCompatActivity() {
         val scroll = findViewById<NestedScrollView>(R.id.scroll)
         scroll.viewTreeObserver.addOnScrollChangedListener {
             Handler(Looper.getMainLooper()).postDelayed({
-                if (scroll.scrollY <= 2) {
+                Log.d(TAG, "onCreate: ${scroll.scrollY}")
+                if (scroll.scrollY <= 1) {
                     if (!up) {
-                        animationRecycler(itemCate)
+                        adaptersCate.up()
+                        //animationRecycler(itemCate)
                     }
                     up = true
-                    adaptersCate.up()
-                    animationRecycler(itemCate)
+                    down = false
+
+                    // animationRecycler(itemCate)
                 }
 
-                if (scroll.scrollY > 1) {
+                if (scroll.scrollY > 2) {
                     if (!down) {
-                        animationRecycler(itemCate)
+                        adaptersCate.down()
                     }
-                    adaptersCate.down()
+                    // adaptersCate.down()
+                    up = false
                     down = true
                 }
-            }, 150)
+            }, 500)
         }
     }
 
